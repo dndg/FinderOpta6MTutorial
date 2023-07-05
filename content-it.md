@@ -1,7 +1,7 @@
 ---
 title: "Introduzione all'Opta™ e al Finder 6M"
 description: "Impara a leggere i registri del 6M utilizzando il protocollo Modbus su Opta™."
-author: 'Fabrizio Trovato
+author: 'Fabrizio Trovato'
 libraries:
   - name: 'ArduinoRS485'
     url: https://www.arduino.cc/reference/en/libraries/arduinors485
