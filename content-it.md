@@ -261,7 +261,7 @@ uint32_t modbus6MRead32(uint8_t address, uint16_t reg)
 }
 ```
 
-## Utilizzo della libreria Finder 6M
+## Utilizzo della libreria Finder6M
 
 Per semplificare tutte le operazioni eseguite in questo tutorial, è possibile
 utilizzare la libreria `Finder6M`. In questo caso, il codice di `setup()`
