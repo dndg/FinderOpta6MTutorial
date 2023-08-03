@@ -1,5 +1,5 @@
 ---
-title: "Introduzione Opta e agli analizzatori di rete Finder serie 6M"
+title: "Introduzione a Opta e agli analizzatori di rete Finder serie 6M"
 description: "Impara a leggere i registri del 6M utilizzando il protocollo Modbus su Opta."
 author: 'Fabrizio Trovato'
 libraries:
