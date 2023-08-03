@@ -1,6 +1,6 @@
 ---
-title: 'Getting Started with Opta™ and Finder 6M'
-description: "Learn how to read 6M registers using the Modbus protocol on Opta™."
+title: 'Getting Started with Opta and Finder 6M'
+description: "Learn how to read 6M registers using the Modbus protocol on Opta."
 author: 'Fabrizio Trovato'
 libraries:
   - name: 'ArduinoRS485'
@@ -24,14 +24,14 @@ hardware:
 
 ## Overview
 
-Among the protocols supported by the Opta™, we find Modbus RTU. In this
+Among the protocols supported by the Opta, we find Modbus RTU. In this
 tutorial we will learn how to implement Modbus RTU communication over RS-485
-between the Opta™ and a Finder 6M power analyzer. In particular, we are going
-to learn how to use the Opta™ to configure a Finder 6M and read its registers.
+between the Opta and a Finder 6M power analyzer. In particular, we are going
+to learn how to use the Opta to configure a Finder 6M and read its registers.
 
 ## Goals
 
-* Learn how to establish RS-485 interface connectivity between the Opta™ and a
+* Learn how to establish RS-485 interface connectivity between the Opta and a
   Finder 6M device.
 * Learn how to use the Modbus RTU communication protocol to configure and read
   the registers of a Finder 6M device.
@@ -40,7 +40,7 @@ to learn how to use the Opta™ to configure a Finder 6M and read its registers.
 
 ### Hardware Requirements
 
-* Opta™ PLC with RS-485 support (x1).
+* Opta PLC with RS-485 support (x1).
 * Finder 6M power analyzer (x1).
 * 12VDC/500mA DIN rail power supply (x1).
 * USB-C® cable (x1).
@@ -76,7 +76,7 @@ address `40006` must be accessed as *holding register* number `5`.
 For more insights on the Modbus communication protocol, take a look at this
 [Modbus article](https://docs.arduino.cc/learn/communication/modbus): all the
 functionalities provided by the `ArduinoModbus` library are supported by the
-Opta™.
+Opta.
 
 ## Instructions
 
@@ -84,7 +84,7 @@ Opta™.
 
 This tutorial will need [the latest version of the Arduino
 IDE](https://www.arduino.cc/en/software). If it is your first time setting up
-the Opta™, check out the [getting started
+the Opta, check out the [getting started
 tutorial](/tutorials/opta/getting-started).
 
 Make sure you install the latest version of the
@@ -94,15 +94,15 @@ and the
 libraries, as they will be used to implement the Modbus RTU communication
 protocol.
 
-### Connecting the Opta™ and Finder 6M
+### Connecting the Opta and Finder 6M
 
 To observe actual measurements we will need to connect the Finder 6M power
 analyzer to the power grid and provide an adequate load. We will also need to
-power the Opta™ with the 12VDC/500mA supply and to correctly setup the RS-485
+power the Opta with the 12VDC/500mA supply and to correctly setup the RS-485
 serial connection: the diagram below shows the correct wiring setup between the
 two devices.
 
-![Connecting Opta™ and Finder 6M](assets/connection.svg)
+![Connecting Opta and Finder 6M](assets/connection.svg)
 
 For the example code to work, we will need to set the Finder 6M communication
 parameters as follows:
@@ -117,12 +117,12 @@ Guide](https://cdn.findernet.com/app/uploads/6M.Tx-User-Guide.pdf).
 ### Code Overview
 
 The goal of the following example is to configure the Finder 6M power analyzer
-using the Opta™, and then to read some of the measurements in the registers of
+using the Opta, and then to read some of the measurements in the registers of
 the 6M and print them to the serial console.
 
 The full code of the example is available [here](assets/Opta6MExample.zip):
 after extracting the files the sketch can be compiled and uploaded to the
-Opta™.
+Opta.
 
 #### Configuring the Finder 6M
 
@@ -326,6 +326,6 @@ repository](https://github.com/dndg/Finder6M).
 ## Conclusion
 
 This tutorial demonstrates how to use the `ArduinoRS485` and `ArduinoModbus`
-libraries to implement the Modbus RTU protocol between the Opta™ and a Finder
+libraries to implement the Modbus RTU protocol between the Opta and a Finder
 6M power analyzer. Additionally, it shows how it is possible to use the
 `Finder6M` library to easily read measurements from a 6M.
