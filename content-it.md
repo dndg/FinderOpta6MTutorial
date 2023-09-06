@@ -25,8 +25,8 @@ hardware:
 ## Panoramica
 
 Tra i protocolli supportati dall'Opta, troviamo Modbus RTU. In questo tutorial
-impareremo a implementare la comunicazione Modbus RTU tramite RS-485 tra Opta
-e un analizzatore di rete Finder serie 6M. In particolare, impareremo come
+impareremo a implementare la comunicazione Modbus RTU tramite RS-485 tra Opta e
+un analizzatore di rete Finder serie 6M. In particolare, impareremo come
 utilizzare l'Opta per configurare un Finder serie 6M e leggerne i registri.
 
 ## Obiettivi
@@ -66,14 +66,14 @@ RS-485.
 
 Come documentato nel documento [Modbus communication
 protocol](https://cdn.findernet.com/app/uploads/Modbus_RS485_6MTx.pdf), le
-misure sui dispositivi Finder serie 6M sono disponibili su Modbus tramite una serie
-di letture a 16 bit: ad esempio, la misura dell'energia è disponibile come un
-valore a 32 bit ottenuto combinando la lettura dei due registri adiacenti a 16
-bit, situati agli indirizzi Modbus `40089` e `40090`. Si noti che, per i
-dispositivi Finder serie 6M, tutti gli offset sono *register offset*, non *byte
-offset*. Inoltre, sui dispositivi Finder serie 6M, l'indirizzamento Modbus parte da
-`0`: questo significa che, ad esempio, bisogna acceddere all'indirizzo Modbus
-`40006` come *holding register* numero `5`.
+misure sui dispositivi Finder serie 6M sono disponibili su Modbus tramite una
+serie di letture a 16 bit: ad esempio, la misura dell'energia è disponibile
+come un valore a 32 bit ottenuto combinando la lettura dei due registri
+adiacenti a 16 bit, situati agli indirizzi Modbus `40089` e `40090`. Si noti
+che, per i dispositivi Finder serie 6M, tutti gli offset sono *register
+offset*, non *byte offset*. Inoltre, sui dispositivi Finder serie 6M,
+l'indirizzamento Modbus parte da `0`: questo significa che, ad esempio, bisogna
+acceddere all'indirizzo Modbus `40006` come *holding register* numero `5`.
 
 Per ulteriori informazioni sul protocollo di comunicazione Modbus, dai
 un'occhiata a questo [articolo su
@@ -118,9 +118,9 @@ utente](https://cdn.findernet.com/app/uploads/6M.Tx-User-Guide.pdf).
 
 ### Panoramica del codice
 
-Lo scopo del seguente esempio è configurare l'analizzatore di rete Finder serie 6M
-utilizzando l'Opta, e successivamente leggere alcune misurazioni dai registri
-del 6M e stamparle su console seriale.
+Lo scopo del seguente esempio è configurare l'analizzatore di rete Finder serie
+6M utilizzando l'Opta, e successivamente leggere alcune misurazioni dai
+registri del 6M e stamparle su console seriale.
 
 Il codice completo dell'esempio è disponibile [qui](assets/Opta6MExample.zip):
 dopo aver estratto i file, è possibile compilare e caricare lo sketch
@@ -209,8 +209,8 @@ boolean modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
 
 #### Lettura dal Finder serie 6M
 
-Nella funzione `loop()` leggeremo le seguenti misurazioni dal Finder serie 6M appena
-configurato e le stamperemo sulla console seriale:
+Nella funzione `loop()` leggeremo le seguenti misurazioni dal Finder serie 6M
+appena configurato e le stamperemo sulla console seriale:
 
 * Frequenza (Hz/100).
 * Potenza attiva (W/100).
@@ -234,8 +234,8 @@ void loop()
 
 Tutte le misurazioni in questo esempio sono lunghe 32 bit e vengono memorizzate
 in registri di 16 bit utilizzando la notazione LSW-first, come indicato nella
-documentazione del Finder serie 6M. Ciò significa che dobbiamo leggere due registri
-di 16 bit adiacenti a partire dall'offset specificato e comporre la
+documentazione del Finder serie 6M. Ciò significa che dobbiamo leggere due
+registri di 16 bit adiacenti a partire dall'offset specificato e comporre la
 misurazione, cosa che facciamo con la seguente funzione:
 
 ```cpp

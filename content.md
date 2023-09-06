@@ -24,10 +24,10 @@ hardware:
 
 ## Overview
 
-Among the protocols supported by the Opta, we find Modbus RTU. In this
-tutorial we will learn how to implement Modbus RTU communication over RS-485
-between the Opta and a Finder 6M power analyzer. In particular, we are going
-to learn how to use the Opta to configure a Finder 6M and read its registers.
+Among the protocols supported by the Opta, we find Modbus RTU. In this tutorial
+we will learn how to implement Modbus RTU communication over RS-485 between the
+Opta and a Finder 6M power analyzer. In particular, we are going to learn how
+to use the Opta to configure a Finder 6M and read its registers.
 
 ## Goals
 
@@ -121,8 +121,7 @@ using the Opta, and then to read some of the measurements in the registers of
 the 6M and print them to the serial console.
 
 The full code of the example is available [here](assets/Opta6MExample.zip):
-after extracting the files the sketch can be compiled and uploaded to the
-Opta.
+after extracting the files the sketch can be compiled and uploaded to the Opta.
 
 #### Configuring the Finder 6M
 
@@ -326,6 +325,6 @@ repository](https://github.com/dndg/Finder6M).
 ## Conclusion
 
 This tutorial demonstrates how to use the `ArduinoRS485` and `ArduinoModbus`
-libraries to implement the Modbus RTU protocol between the Opta and a Finder
-6M power analyzer. Additionally, it shows how it is possible to use the
-`Finder6M` library to easily read measurements from a 6M.
+libraries to implement the Modbus RTU protocol between the Opta and a Finder 6M
+power analyzer. Additionally, it shows how it is possible to use the `Finder6M`
+library to easily read measurements from a 6M.
