@@ -329,7 +329,7 @@ ufficiale](https://github.com/dndg/Finder6M).
 
 ## Conclusioni
 
-Questo tutorial illustra come utilizzare le librerie `ArduinoRS485` e
+Questo tutorial mostra come utilizzare le librerie `ArduinoRS485` e
 `ArduinoModbus` per implementare il protocollo Modbus RTU tra l'Opta e un
 analizzatore di rete Finder serie 6M. Inoltre, mostra come sia possibile
 utilizzare la libreria `Finder6M` per leggere facilmente le misurazioni da un
