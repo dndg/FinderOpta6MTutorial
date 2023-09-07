@@ -1,6 +1,6 @@
 ---
-title: "Introduzione a Opta e agli analizzatori di rete Finder serie 6M"
-description: "Impara a leggere i registri del 6M utilizzando il protocollo Modbus su Opta."
+title: "Introduzione a Finder Opta e agli analizzatori di rete Finder serie 6M"
+description: "Impara a leggere i registri del 6M utilizzando il protocollo Modbus su Finder Opta."
 author: 'Fabrizio Trovato'
 libraries:
   - name: 'ArduinoRS485'
@@ -24,15 +24,16 @@ hardware:
 
 ## Panoramica
 
-Tra i protocolli supportati dall'Opta, troviamo Modbus RTU. In questo tutorial
-impareremo a implementare la comunicazione Modbus RTU tramite RS-485 tra Opta e
-un analizzatore di rete Finder serie 6M. In particolare, impareremo come
-utilizzare l'Opta per configurare un Finder serie 6M e leggerne i registri.
+Tra i protocolli supportati dal Finder Opta, troviamo Modbus RTU. In questo
+tutorial impareremo a implementare la comunicazione Modbus RTU tramite RS-485
+tra Finder Opta e un analizzatore di rete Finder serie 6M. In particolare,
+impareremo come utilizzare il Finder Opta per configurare un Finder serie 6M e
+leggerne i registri.
 
 ## Obiettivi
 
-* Imparare a stabilire la connettività dell'interfaccia RS-485 tra l'Opta e un
-  dispositivo Finder serie 6M.
+* Imparare a stabilire la connettività dell'interfaccia RS-485 tra Finder Opta
+  e un dispositivo Finder serie 6M.
 * Imparare a utilizzare il protocollo di comunicazione Modbus RTU per
   configurare e leggere i registri di un dispositivo Finder serie 6M.
 
@@ -40,7 +41,7 @@ utilizzare l'Opta per configurare un Finder serie 6M e leggerne i registri.
 
 ### Requisiti hardware
 
-* PLC Opta con supporto RS-485 (x1).
+* PLC Finder Opta con supporto RS-485 (x1).
 * Analizzatore di rete Finder serie 6M (x1).
 * Alimentatore DIN rail 12VDC/500mA (x1).
 * Cavo USB-C® (x1).
@@ -78,15 +79,16 @@ acceddere all'indirizzo Modbus `40006` come *holding register* numero `5`.
 Per ulteriori informazioni sul protocollo di comunicazione Modbus, dai
 un'occhiata a questo [articolo su
 Modbus](https://docs.arduino.cc/learn/communication/modbus): tutte le
-funzionalità fornite dalla libreria `ArduinoModbus` sono supportate da Opta.
+funzionalità fornite dalla libreria `ArduinoModbus` sono supportate da Finder
+Opta.
 
 ## Istruzioni
 
 ### Configurazione dell'Arduino IDE
 
 Per seguire questo tutorial, sarà necessaria [l'ultima versione dell'Arduino
-IDE](https://www.arduino.cc/en/software). Se è la prima volta che configuri
-l'Opta, dai un'occhiata al tutorial [Getting Started with
+IDE](https://www.arduino.cc/en/software). Se è la prima volta che configuri il
+Finder Opta, dai un'occhiata al tutorial [Getting Started with
 Opta](/tutorials/opta/getting-started).
 
 Assicurati di installare la versione più recente delle librerie
@@ -95,11 +97,11 @@ Assicurati di installare la versione più recente delle librerie
 poiché verranno utilizzate per implementare il protocollo di comunicazione
 Modbus RTU.
 
-### Connessione tra Opta e Finder serie 6M
+### Connessione tra Finder Opta e Finder serie 6M
 
 Per osservare misurazioni effettive, sarà necessario collegare l'analizzatore
 di rete Finder serie 6M alla rete elettrica e fornire un carico adeguato. Sarà
-anche necessario alimentare l'Opta con un alimentatore da 12VDC/500mA e
+anche necessario alimentare il Finder Opta con un alimentatore da 12VDC/500mA e
 configurare correttamente la connessione seriale RS-485. Il diagramma
 sottostante mostra la configurazione corretta dei collegamenti tra i due
 dispositivi.
@@ -119,12 +121,12 @@ utente](https://cdn.findernet.com/app/uploads/6M.Tx-User-Guide.pdf).
 ### Panoramica del codice
 
 Lo scopo del seguente esempio è configurare l'analizzatore di rete Finder serie
-6M utilizzando l'Opta, e successivamente leggere alcune misurazioni dai
+6M utilizzando il Finder Opta, e successivamente leggere alcune misurazioni dai
 registri del 6M e stamparle su console seriale.
 
 Il codice completo dell'esempio è disponibile [qui](assets/Opta6MExample.zip):
-dopo aver estratto i file, è possibile compilare e caricare lo sketch
-sull'Opta.
+dopo aver estratto i file, è possibile compilare e caricare lo sketch sul
+Finder Opta.
 
 #### Configurazione del Finder serie 6M
 
@@ -330,7 +332,7 @@ ufficiale](https://github.com/dndg/Finder6M).
 ## Conclusioni
 
 Questo tutorial mostra come utilizzare le librerie `ArduinoRS485` e
-`ArduinoModbus` per implementare il protocollo Modbus RTU tra l'Opta e un
-analizzatore di rete Finder serie 6M. Inoltre, mostra come sia possibile
+`ArduinoModbus` per implementare il protocollo Modbus RTU tra il Finder Opta e
+un analizzatore di rete Finder serie 6M. Inoltre, mostra come sia possibile
 utilizzare la libreria `Finder6M` per leggere facilmente le misurazioni da un
 6M.
