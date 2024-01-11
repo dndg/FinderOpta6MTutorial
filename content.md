@@ -105,15 +105,26 @@ between the two devices.
 
 ![Connecting Opta and Finder 6M](assets/connection.svg)
 
-For the example code to work, we will need to set the Finder 6M communication
-parameters as follows:
+### Configuring the Modbus parameters of the Finder 6M
+
+To configure the initial Modbus parameters of the Finder 6M, we should refer to
+page 6 of the [user
+guide](https://cdn.findernet.com/app/uploads/6M.Tx-User-Guide.pdf). In fact,
+the position of the DIP switches on the 6M determines its Modbus configuration.
+
+Tipically, the DIP switch number 1 will be `UP` and the number 2 will be
+`DOWN`, meaning the 6M is configured with Modbus address `1` and baudrate
+`9600`. However, in this example the initial parameters of the Finder 6M are:
 
 * Modbus address `1`.
 * Baudrate `38400`.
 
-We can achieve this setting `UP` both DIP switches on the 6M, as explained on
-page 6 of the [User
-Guide](https://cdn.findernet.com/app/uploads/6M.Tx-User-Guide.pdf).
+We can achieve this configuration by **setting `UP` both DIP switches on the
+6M**.
+
+Later, when prompted by the sketch, we will adjust both DIP switches `DOWN`,
+allowing the 6M to use the custom Modbus configuration assigned to it by the
+sketch itself.
 
 ### Code Overview
 
@@ -132,6 +143,9 @@ In the `setup()` we are going to:
 * Configure the Modbus parameters according to [the Modbus over serial line
   guide](https://modbus.org/docs/Modbus_over_serial_line_V1_02.pdf).
 * Set a custom Modbus address and Baudrate for our 6M.
+
+Let's remember that in this example the initial position of both DIP switches
+on the Finder 6M is `UP`.
 
 ```cpp
 #include <ArduinoModbus.h>
@@ -160,12 +174,12 @@ void setup()
     // Save above settings
     if (modbus6MWrite16(MODBUS_6M_DEFAULT_ADDRESS, FINDER_6M_REG_COMMAND, FINDER_6M_COMMAND_SAVE))
     {
-        // We have 30 seconds to lower the DIP switches
-        Serial.println("Waiting 30s while you:");
+        // We have 20 seconds to lower the DIP switches
+        Serial.println("Waiting 20s while you:");
         Serial.println("1. Power OFF the 6M.");
         Serial.println("2. Set both DIP switches DOWN.");
         Serial.println("3. Power back ON the 6M.");
-        delay(30000);
+        delay(20000);
     }
     else
     {
@@ -177,9 +191,9 @@ void setup()
 
 The header file `finder-6m.h` contains all the needed definitions, including
 Modbus parameters and registers offsets; notice how the example uses `8-N-1`
-serial configuration. After saving the settings, the sketch gives us 30s to set
+serial configuration. After saving the settings, the sketch gives us 20s to set
 our 6M to use custom parameters by setting both DIP switches on the device
-`DOWN`: relevant output will be displayed on the serial console.
+`DOWN`: relevant instruction will be displayed on the serial console.
 
 All the configuration values we write on the Finder 6M are stored on 16-bits
 registers, so we use the following function to write to them:
@@ -289,11 +303,11 @@ void setup()
     // Save above settings
     if (f6m.saveSettings(MODBUS_6M_DEFAULT_ADDRESS))
     {
-        Serial.println("Waiting 30s while you:");
+        Serial.println("Waiting 20s while you:");
         Serial.println("1. Power OFF the 6M.");
         Serial.println("2. Set both DIP switches DOWN.");
         Serial.println("3. Power back ON the 6M.");
-        delay(30000);
+        delay(20000);
     }
     else
     {
