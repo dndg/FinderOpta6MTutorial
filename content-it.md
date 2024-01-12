@@ -118,18 +118,26 @@ Modbus del dispositivo.
 
 Di solito, lo switch DIP 1 si troverà in posizione `UP` e il 2 si troverà in
 posizione `DOWN`, il che determina una configurazione Modbus con indirizzo `1`
-e baudrate `9600`. Tuttavia, in questo esempio i parametri iniziali di
-comunicazione del Finder serie 6M sono:
+e baudrate `9600`.
+
+![Switch DIP, baudrate 9600](assets/6M-ud.svg)
+
+Tuttavia, in questo esempio i parametri iniziali di comunicazione del Finder
+serie 6M sono:
 
 * Indirizzo Modbus: `1`.
 * Baudrate: `38400`.
 
 Possiamo impostare questi valori **posizionando entrambi gli switch DIP del
-Finder serie 6M alla posizione `UP`**.
+Finder serie 6M alla posizione `UP`**, come mostrato nella figura qui sotto.
+
+![Switch DIP, baudrate 38400](assets/6M-uu.svg)
 
 Successivamente, quando richiesto dallo sketch, posizioneremo entrambi gli
 switch DIP in posizione `DOWN`, in modo che il Finder serie 6M utilizzi la
 configurazione Modbus custom assegnatali dallo sketch stesso.
+
+![Switch DIP, custom](assets/6M-dd.svg)
 
 ### Panoramica del codice
 
@@ -198,8 +206,8 @@ Il file `finder-6m.h` contiene tutte le definizioni necessarie, inclusi i
 parametri Modbus e gli offset dei registri; si noti che l'esempio utilizza la
 configurazione seriale `8-N-1`. Dopo aver salvato le impostazioni, lo sketch ci
 lascia 20 secondi per configurare gli switch DIP del 6M in posizione `DOWN`, in
-modo che il dispositivo utilizzi i parametri da noi configurati: le
-istruzioni rilevanti verranno visualizzate su monitor seriale.
+modo che il dispositivo utilizzi i parametri da noi configurati: le istruzioni
+rilevanti verranno visualizzate su monitor seriale.
 
 Tutti i valori di configurazione che scriviamo sul Finder serie 6M vengono
 memorizzati su registri a 16 bit, quindi utilizzeremo la seguente funzione per
