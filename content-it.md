@@ -6,7 +6,7 @@ libraries:
   - name: 'ArduinoRS485'
     url: https://www.arduino.cc/reference/en/libraries/arduinors485
   - name: 'ArduinoModbus'
-    url: https://www.arduino.cc/reference/en/libraries/arduinomodbus
+    url: https://www.arduino.cc/reference/en/libraries/arduinoModbus
 difficulty: intermediate
 tags:
   - Getting-started
@@ -52,13 +52,6 @@ rete Finder serie 6M. In particolare, impareremo a:
 Infine presenteremo la libreria `Finder6M`, che permette di semplificare tutte
 le operazioni presentate nel corso di questo tutorial.
 
-## Obiettivi
-
-* Imparare a utilizzare il protocollo di comunicazione Modbus RTU su Finder
-  Opta per leggere misure da un dispositivo Finder serie 6M.
-* Imparare a utilizzare il protocollo di comunicazione Modbus RTU su Finder
-  Opta per configurare un dispositivo Finder serie 6M.  
-
 ## Requisiti
 
 ### Hardware
@@ -73,8 +66,7 @@ le operazioni presentate nel corso di questo tutorial.
 
 ### Software
 
-* [Arduino IDE 1.8.10+](https://www.arduino.cc/en/software), [Arduino IDE
-  2.0+](https://www.arduino.cc/en/software) o [Arduino Web
+* [Arduino IDE 2.0+](https://www.arduino.cc/en/software) o [Arduino Web
   Editor](https://create.arduino.cc/editor).
 * Se si utilizza Arduino IDE offline, è necessario installare le librerie
   `ArduinoRS485` e `ArduinoModbus` utilizzando il Library Manager di Arduino
@@ -86,7 +78,7 @@ le operazioni presentate nel corso di questo tutorial.
 
 Per seguire questo tutorial, sarà necessario collegare l'analizzatore di rete
 Finder serie 6M alla rete elettrica e fornire un carico adeguato. Sarà inoltre
-necessario alimentare il Finder Opta con un alimentatore da 12VDC/500mA e
+necessario alimentare il Finder Opta con un alimentatore da 12-24VDC/500mA e
 configurare correttamente la connessione seriale RS-485. Il diagramma
 sottostante mostra la configurazione corretta dei collegamenti tra il Finder
 Opta e il Finder serie 6M.
@@ -113,9 +105,9 @@ utilizzare il protocollo Modbus RTU su connessione seriale RS-485, per
 trasformare Finder Opta nel punto focale di un sistema di monitoraggio
 industriale composto di analizzatori di rete Finder serie 6M.
 
-Il Finder serie 6M mettono a disposizione una serie di *holding register*,
-ovvero registri dedicati alla memorizzazione di dati che possono essere letti o
-scritti da altri dispositivi Modbus. Ogni registro è identificato da un
+I Finder serie 6M mettono a disposizione una serie di *holding register*, a 16
+bit ovvero registri dedicati alla memorizzazione di dati che possono essere
+letti o scritti da altri dispositivi Modbus. Ogni registro è identificato da un
 indirizzo ed è possibile accedere al suo contenuto tramite una richiesta.
 
 Come specificato nel documento [Modbus communication
@@ -124,7 +116,7 @@ misure fornite dagli analizzatori di rete Finder serie 6M possono essere
 ottenute tramite Modbus effettuando una serie di letture a 16 bit. Per esempio,
 la misura dell'energia è rappresentata da un valore a 32 bit ottenuto
 combinando la lettura di due registri da 16 bit adiacenti, situati agli
-indirizzi Modbus `40089` e `40090`.
+indirizzi Modbus `40208` e `40209`.
 
 È importante notare che, nei dispositivi Finder Serie 6M, gli offset sono tutti
 basati sul *register offset*, non sul *byte offset*. Ciò significa che useremo
@@ -134,9 +126,9 @@ da tale indirizzo. Inoltre, su tali dispositivi, l'indirizzamento Modbus parte
 da `0`, il che implica che accederemo all'indirizzo Modbus `40006` come
 *holding register* numero `5`.
 
-Ulteriori informazioni sul protocollo di comunicazione Modbus sono contennuto
+Ulteriori informazioni sul protocollo di comunicazione Modbus sono contennute
 in [questo articolo sul
-protocollo](https://docs.arduino.cc/learn/communication/modbus). Tutte le
+protocollo](https://docs.arduino.cc/learn/communication/Modbus). Tutte le
 funzionalità fornite dalla libreria `ArduinoModbus` sono supportate da Finder
 Opta.
 
@@ -144,16 +136,16 @@ Opta.
 
 ### Configurazione dell'Arduino IDE
 
-Per seguire questo tutorial, sarà necessaria [l'ultima versione dell'Arduino
-IDE](https://www.arduino.cc/en/software). Se è la prima volta che configuri il
-Finder Opta, dai un'occhiata al tutorial [Getting Started with
-Opta](/tutorials/opta/getting-started): in questo tutorial spieghiamo come
-installare il Board Manager per la piattaforma Mbed OS Opta, ovvero l'insieme
-di tool di base necessari a creare e utilizzare uno sketch per Finder Opta con
-Arduino IDE.
+Per seguire questo tutorial, sarà necessaria [l'ultima versione
+dell'Arduino IDE](https://www.arduino.cc/en/software). Se è la prima
+volta che configuri il dispositivo Finder Opta, dai un'occhiata al
+tutorial [Getting Started with Opta](/tutorials/opta/getting-started):
+in questo tutorial spieghiamo come installare il Board Manager per la
+piattaforma Mbed OS Opta, ovvero l'insieme di tool di base necessari a
+creare e utilizzare uno sketch per Finder Opta con Arduino IDE.
 
 Assicurati di installare la versione più recente delle librerie
-[ArduinoModbus](https://www.arduino.cc/reference/en/libraries/arduinomodbus/) e
+[ArduinoModbus](https://www.arduino.cc/reference/en/libraries/arduinoModbus/) e
 [ArduinoRS485](https://www.arduino.cc/reference/en/libraries/arduinors485/),
 poiché verranno utilizzate per implementare la comunicazione Modbus RTU. Per
 una breve spiegazione su come installare manualmente le librerie all'interno di
@@ -164,7 +156,7 @@ articolo](https://support.arduino.cc/hc/en-us/articles/5145457742236-Add-librari
 
 #### Lettura di misure dal Finder serie 6M
 
-Nella prima parte di questo tutorial andremo a scrivere uno sketch che permetta
+Nella prima parte di questo tutorial scriveremo uno sketch che permetta
 di leggere alcune misure da un analizzatore di rete Finder serie 6M, per poi a
 stamparle su monitor seriale. Il codice completo di questa parte di tutorial è
 disponibile [qui](assets/Opta6MReadExample.zip). È possibile estrarre il
@@ -173,18 +165,18 @@ alternativamente creare un nuovo sketch chiamato `Opta6MReadExample`
 utilizzando Arduino IDE ed incollare il codice presente nel tutorial.
 
 Iniziamo scrivendo un file di configurazione contenente alcune costanti da
-utilizzare nello sketch di lettura. In particolare, creeremo un file chiamato
+utilizzare nello sketch di lettura. In particolare, creiamo un file chiamato
 `finder-6m-read.h` all'interno della stessa cartella dello sketch, e al suo
-interno inseriremo:
+interno inseriamo:
 
 * I valori da utilizzare per inizializzare la comunicazione Modbus tramite
   porta seriale RS-485, compresi indirizzo di Modbus e baudrate del Finder
   serie 6M.
 * Gli indirizzi dei registri del Finder serie 6M da cui leggere le misure.
-* Il valore di errore restituito dal Finder serie 6M in caso di errori di
+* Il valore di errore restituito dalla libraria Modbus in caso di errori di
   lettura.
 
-Il file di configurazione avrà il seguento contenuto:
+Il file di configurazione deve avere il seguento contenuto:
 
 ```cpp
 // Configurazione
@@ -218,8 +210,8 @@ void loop() {
 }
 ```
 
-All'inizio del nostro sketch andremo ad importare le librerie ed i file
-necessari al funzionamento del programma:
+All'inizio del nostro sketch importiamo le librerie ed i file necessari
+al funzionamento del programma:
 
 ```cpp
 #include <Arduino.h>
@@ -240,7 +232,7 @@ In particolare abbiamo importato le librerie:
 
 * `Arduino`: contiene numerose funzionalità di base per le schede Arduino, ed è
 quindi buona norma importarla all'inizio di tutti gli sketch.
-* `ArduinoRS485`: necessaria a mandare e ricvere data su porta seriale RS-485.
+* `ArduinoRS485`: necessaria a inviare e ricevere dati su porta seriale RS-485.
 * `ArduinoModbus`: implementa il protocollo Modbus.
 
 Inoltre abbiamo importato il file `finder-6m-read.h` creato in precedenza e
@@ -288,11 +280,11 @@ funzione vogliamo leggere alcune misure contenute nei registri del Finder serie
 * Indirizzo del registro da cui iniziare la lettura.
 * Numero di bit da leggere cominciando dall'indirizzo di partenza.
 
-In questo esempio, desideriamo leggere frequenza, potenza attiva, potenza
+In questo esempio, mostriamo come leggere frequenza, potenza attiva, potenza
 apparente ed energia dal Finder serie 6M. Tutte queste misure sono
-rappresentate su 32 bit e abbiamo definito come costanti gli indirizzi degli
+rappresentate con 32 bit e abbiamo definito come costanti gli indirizzi degli
 *holding register* che le contengono. La cosa più semplice è quindi scrivere
-una funzione che, dato un indirizzo di Modbus ed un registro di partenza legga
+una funzione che, dato un indirizzo Modbus ed un registro di partenza legga
 32 bit dal dispositivo:
 
 ```cpp
@@ -314,7 +306,7 @@ void loop() {
   // Codice di loop, eseguito all'infinito
 }
 
-uint32_t modbus6MRead32(uint8_t address, uint16_t reg)
+uint32_t Modbus6MRead32(uint8_t address, uint16_t reg)
 {
     ModbusRTUClient.requestFrom(address, HOLDING_REGISTERS, reg, 2);
     uint32_t data1 = ModbusRTUClient.read();
@@ -330,18 +322,18 @@ uint32_t modbus6MRead32(uint8_t address, uint16_t reg)
 }
 ```
 
-La funzione `modbus6MRead32()` legge dal dispositivo avente indirizzo Modbus
+La funzione `Modbus6MRead32()` legge dal dispositivo avente indirizzo Modbus
 `address`, a partire dal registro `reg`. Si noti che l'ultimo parametro passato
-alla funzione `requestFrom()` è l'offset, che come spiegato in precedenza è un
-*offset register*: essendo ogni registro lungo 16 bit ed ogni misura lunga 32
-bit il valore da passare è `2`. In seguito la funzione verifica che non ci
+alla funzione `requestFrom()` è il numero di registri consecutivi da leggere, a
+partire da `reg`: essendo ogni registro lungo 16 bit ed ogni misura lunga 32
+bit il valore passato è `2`. In seguito la funzione verifica che non ci
 siano errori di lettura ed in caso affermativo combina le due letture da 16 bit
 nei 32 bit della misura: il primo valore letto viene posto nei 16 bit meno
 significativi, mentre il secondo valore letto viene posto nei 16 bit più
-significativi secondo la notazione LSW-first.
+significativi.
 
-Il codice della funzione `loop()` si limiterà a chiamare la funzione
-`modbus6MRead32()` passandogli i giusti parametri, ed in seguito a stampare le
+Il codice della funzione `loop()` si limita a chiamare la funzione
+`Modbus6MRead32()` passandogli i giusti parametri, ed in seguito stampa le
 misure su monitor seriale:
 
 ```cpp
@@ -361,10 +353,10 @@ void setup()
 
 void loop()
 {
-    int32_t frequency = modbus6MRead32(ADDRESS, REG_FREQUENCY);
-    int32_t activePower = modbus6MRead32(ADDRESS, REG_ACTIVE_POWER);
-    int32_t apparentPower = modbus6MRead32(ADDRESS, REG_APPARENT_POWER);
-    int32_t energy = modbus6MRead32(ADDRESS, REG_ENERGY);
+    int32_t frequency = Modbus6MRead32(ADDRESS, REG_FREQUENCY);
+    int32_t activePower = Modbus6MRead32(ADDRESS, REG_ACTIVE_POWER);
+    int32_t apparentPower = Modbus6MRead32(ADDRESS, REG_APPARENT_POWER);
+    int32_t energy = Modbus6MRead32(ADDRESS, REG_ENERGY);
 
     Serial.print("Frequency = " + (frequency != INVALID_DATA ? String(frequency) : String("read error!")));
     Serial.print(", Active power = " + (activePower != INVALID_DATA ? String(activePower) : String("read error!")));
@@ -374,7 +366,7 @@ void loop()
     delay(1000);
 }
 
-uint32_t modbus6MRead32(uint8_t address, uint16_t reg)
+uint32_t Modbus6MRead32(uint8_t address, uint16_t reg)
 {
     ModbusRTUClient.requestFrom(address, HOLDING_REGISTERS, reg, 2);
     uint32_t data1 = ModbusRTUClient.read();
@@ -399,15 +391,15 @@ Frequency = 4991, Active power = 0, Apparent power = 0, Energy = 0
 
 #### Configurazione del Finder serie 6M
 
-Nella seconda parte di questo tutorial scriveremo uno sketch che configura il
+Nella seconda parte di questo tutorial scriviamo uno sketch che configura il
 Finder serie 6M, cambiando indirizzo di Modbus del dispositivo. Questo step è
 particolarmente importante se si desidera utilizzare più di un Finder serie 6M,
-poichè ciascuno dovrà avere un indirizzo di Modbus univoco. Il codice completo
-di questo secondo sketch è disponibile [qui](assets/Opta6MConfigExample.zip). È
-possibile estrarre il contenuto del file `.zip` e copiarlo nella cartella
-`~/Documents/Arduino`, o alternativamente creare un nuovo sketch chiamato
-`Opta6ConfigExample` utilizzando Arduino IDE ed incollare il codice presente
-nel tutorial.
+poichè ciascuno dovrà avere un indirizzo di Modbus diverso e univoco. Il codice
+completo di questo secondo sketch è disponibile
+[qui](assets/Opta6MConfigExample.zip). È possibile estrarre il contenuto del
+file `.zip` e copiarlo nella cartella `~/Documents/Arduino`, o alternativamente
+creare un nuovo sketch chiamato `Opta6MConfigExample` utilizzando Arduino IDE ed
+incollare il codice presente nel tutorial.
 
 Iniziamo scrivendo un file di configurazione contenente alcune costanti da
 utilizzare nello sketch. In particolare, creeremo un file chiamato
@@ -423,7 +415,7 @@ interno inseriremo:
 * L'indirizzo del Finder serie 6M da cui effettuare una lettura di test, e il
   valore di errore restituito dal dispositivo in caso di errori.
 
-Il file di configurazione avrà il seguento contenuto:
+Il file di configurazione ha il seguento contenuto:
 
 ```cpp
 // Configurazione
@@ -434,7 +426,7 @@ Il file di configurazione avrà il seguento contenuto:
 #define TIMEOUT 1000
 
 // Registri
-#define REG_MODBUS_ADDRESS 2
+#define REG_Modbus_ADDRESS 2
 #define REG_BAUDRATE 4
 #define REG_FREQUENCY 204
 #define REG_COMMAND 251
@@ -447,9 +439,9 @@ Il file di configurazione avrà il seguento contenuto:
 #define INVALID_DATA 0xFFFFFFFF
 ```
 
-Passiamo ora a scrivere lo sketch `Opta6ConfigExample`, che come tutti gli
-sketch per Arduino sarà composto da una funzione di `setup()` e una funzione
-`loop()`:
+Passiamo ora a scrivere lo sketch `Opta6MConfigExample`, che sarà composto
+dalla sola funzione di `setup()`: in questo caso dopo la configurazione non
+vogliame fare altro e la funzione `loop()` rimarrà vuota:
 
 ```cpp
 void setup() {
@@ -457,12 +449,12 @@ void setup() {
 }
 
 void loop() {
-  // Codice di loop, eseguito all'infinito
+  // Non utilizzata
 }
 ```
 
-All'inizio del nostro sketch andremo ad importare le librerie ed i file
-necessari al funzionamento del programma:
+All'inizio del nostro sketch importiamo le librerie ed i file necessari al
+funzionamento del programma:
 
 ```cpp
 #include <Arduino.h>
@@ -475,7 +467,7 @@ void setup() {
 }
 
 void loop() {
-  // Codice di loop, eseguito all'infinito
+  // Non utilizzata
 }
 ```
 
@@ -497,17 +489,16 @@ del programma è necessario eseguire le seguenti operazioni:
 
 Infatti, una volta che lo sketch avrà configurato indirizzo di Modbus e
 baudarate sarà necessario spegnere il Finder serie 6M, posizionare gli switch
-DIP in posizione `DOWN` e riavviare il dispositivo. Lo sketch darà all'utente
-20 secondi per eseguire questa operazione. La posizione degli switch DIP
-desiderata è mostrata nella figura sotto, e come specificato nel manuale utente
-del Finder serie 6M garantisce che il dispositivo utilizzi la configurazione
-Modbus custom.
+DIP in posizione `DOWN` e riavviare il dispositivo. La posizione degli switch
+DIP desiderata è mostrata nella figura sotto, e come specificato nel manuale
+utente del Finder serie 6M garantisce che il dispositivo utilizzi la
+configurazione Modbus custom.
 
 <img src="assets/6M-dd.svg" width=600 alt="DIP switches, custom">
 
 Il codice qui sotto esegue alcune delle stesse operazioni viste nello sketch
 precedente, ma in più si occupa di effettuare alcune scritture sul Finder serie
-6M chiamando la funzione `modbus6MWrite16()` che scriveremo a breve:
+6M chiamando la funzione `Modbus6MWrite16()` che scriveremo a breve:
 
 ```cpp
 #include <Arduino.h>
@@ -526,24 +517,24 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 
     // Cambia indirizzo Modbus
-    modbus6MWrite16(ADDRESS, REG_MODBUS_ADDRESS, NEW_ADDRESS);
+    Modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
     // Imposta baudarate
-    modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
+    Modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
 
     // Salva la configurazione
 }
 
 void loop() {
-  // Codice di loop, eseguito all'infinito
+  // Non utilizzata
 }
 
-void modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
+void Modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t value)
 {
-  // Scrivi toWrite nel registro reg del dispositivo con indirizzo address
+  // Scrive value nel registro reg del dispositivo con indirizzo address
 }
 ```
 
-La funzione `modbus6MWrite16()` si coccupa di scrivere comandi da 16 bit nel
+La funzione `Modbus6MWrite16()` si coccupa di scrivere comandi da 16 bit nel
 registro indicato del dispositivo con indirizzo Modbus pari ad `address`:
 
 ```cpp
@@ -563,26 +554,25 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 
     // Cambia indirizzo Modbus
-    modbus6MWrite16(ADDRESS, REG_MODBUS_ADDRESS, NEW_ADDRESS);
+    Modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
     // Imposta baudarate
-    modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
+    Modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
 
     // Salva la configurazione
 }
 
 void loop() {
-  // Codice di loop, eseguito all'infinito
+  // Non utilizzata
 }
 
-void modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
+void Modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t value)
 {
-    ModbusRTUClient.holdingRegisterWrite(address, reg, toWrite);
+    ModbusRTUClient.holdingRegisterWrite(address, reg, value);
 }
 ```
 
 A questo punto non ci resta che salvare la configurazione mandando un nuovo
-comando, stampare a terminale le istruzioni per l'utente e aspettare venti
-secondi:
+comando e stampare a terminale le istruzioni per l'utente:
 
 ```cpp
 #include <Arduino.h>
@@ -601,24 +591,23 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 
     // Cambia indirizzo Modbus
-    modbus6MWrite16(ADDRESS, REG_MODBUS_ADDRESS, NEW_ADDRESS);
+    Modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
     // Imposta baudarate
-    modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
+    Modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
 
-    modbus6MWrite16(ADDRESS, REG_COMMAND, COMMAND_SAVE);
+    Modbus6MWrite16(ADDRESS, REG_COMMAND, COMMAND_SAVE);
     delay(3000);
-    Serial.println("Waiting 20s while you:");
+    Serial.println("Modbus address has been changed. Please, execute the following steps:");
     Serial.println("1. Power OFF the 6M.");
     Serial.println("2. Set both DIP switches DOWN.");
     Serial.println("3. Power back ON the 6M.");
-    delay(20000);
 }
 
 void loop() {
-  // Codice di loop, eseguito all'infinito.
+  // Non utilizzata
 }
 
-void modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
+void Modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
 {
     ModbusRTUClient.holdingRegisterWrite(address, reg, toWrite);
 }
@@ -629,80 +618,11 @@ all'utente tempo di collegarsi al monitor seriale di Arduino IDE. L'output
 mostrato sarà il seguente:
 
 ```text
-Waiting 20s while you:
+Modbus address has been changed. Please, execute the following steps:
 1. Power OFF the 6M.
 2. Set both DIP switches DOWN.
 3. Power back ON the 6M.
 ```
-
-Nel `loop()` utilizzeremo il codice scritto precedentemente in questo tutorial,
-per effettuare una lettura al nuovo indirizzo Modbus e verificare che essa vada
-a buon fine. In caso di successo, avremo la certezza la configurazione sia
-stata applicata al Finder serie 6M:
-
-```cpp
-#include <Arduino.h>
-#include <ArduinoRS485.h>
-#include <ArduinoModbus.h>
-#include "finder-6m-config.h"
-
-constexpr uint8_t NEW_ADDRESS = 20;
-
-void setup()
-{
-    Serial.begin(9600);
-
-    RS485.setDelays(PREDELAY, POSTDELAY);
-    ModbusRTUClient.setTimeout(TIMEOUT);
-    ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
-
-    // Change Modbus address
-    modbus6MWrite16(ADDRESS, REG_MODBUS_ADDRESS, NEW_ADDRESS);
-    // Baudrate 38400 has code 5
-    modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
-
-    // Save above settings, we have 20 seconds to lower the DIP switches
-    modbus6MWrite16(ADDRESS, REG_COMMAND, COMMAND_SAVE);
-    delay(3000);
-    Serial.println("Waiting 20s while you:");
-    Serial.println("1. Power OFF the 6M.");
-    Serial.println("2. Set both DIP switches DOWN.");
-    Serial.println("3. Power back ON the 6M.");
-    delay(20000);
-}
-
-void loop()
-{
-    int32_t frequency = modbus6MRead32(NEW_ADDRESS, REG_FREQUENCY);
-    Serial.println("Frequency = " + (frequency != INVALID_DATA ? String(frequency) : String("read error!")));
-    delay(1000);
-}
-
-void modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
-{
-    ModbusRTUClient.holdingRegisterWrite(address, reg, toWrite);
-}
-
-uint32_t modbus6MRead32(uint8_t address, uint16_t reg)
-{
-    ModbusRTUClient.requestFrom(address, HOLDING_REGISTERS, reg, 2);
-    uint32_t data1 = ModbusRTUClient.read();
-    uint32_t data2 = ModbusRTUClient.read();
-    if (data1 != INVALID_DATA && data2 != INVALID_DATA)
-    {
-        return data2 << 16 | data1;
-    }
-    return INVALID_DATA;
-}
-```
-
-In caso di successo l'output mostrato sarà il seguente, e si ripeterà una volta
-al secondo:
-
-```text
-Frequency = 4991
-```
-
 ## Utilizzo della libreria Finder6M
 
 Per semplificare tutte le operazioni eseguite in questo tutorial, è possibile
@@ -789,18 +709,15 @@ void setup()
 
     f6m.saveSettings(ADDRESS);
     delay(5000);
-    Serial.println("Waiting 20s while you:");
+    Serial.println("Modbus address has been changed. Please, execute the following steps:");
     Serial.println("1. Power OFF the 6M.");
     Serial.println("2. Set both DIP switches DOWN.");
     Serial.println("3. Power back ON the 6M.");
-    delay(20000);
 }
 
 void loop()
 {
-    int32_t frequency = f6m.getFrequency(NEW_ADDRESS);
-    Serial.println("   frequency = " + (frequency != INVALID_DATA ? String(frequency) : String("read error!")));
-    delay(1000);
+    // Non utilizzata
 }
 ```
 
