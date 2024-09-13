@@ -136,13 +136,13 @@ Opta.
 
 ### Configurazione dell'Arduino IDE
 
-Per seguire questo tutorial, sarà necessaria [l'ultima versione
-dell'Arduino IDE](https://www.arduino.cc/en/software). Se è la prima
-volta che configuri il dispositivo Finder Opta, dai un'occhiata al
-tutorial [Getting Started with Opta](/tutorials/opta/getting-started):
-in questo tutorial spieghiamo come installare il Board Manager per la
-piattaforma Mbed OS Opta, ovvero l'insieme di tool di base necessari a
-creare e utilizzare uno sketch per Finder Opta con Arduino IDE.
+Per seguire questo tutorial, sarà necessaria [l'ultima versione dell'Arduino
+IDE](https://www.arduino.cc/en/software). Se è la prima volta che configuri un
+Finder Opta, dai un'occhiata al tutorial [Getting Started with
+Opta](/tutorials/opta/getting-started): in questo tutorial spieghiamo come
+installare il Board Manager per la piattaforma Mbed OS Opta, ovvero l'insieme
+di tool di base necessari a creare e utilizzare uno sketch per Finder Opta con
+Arduino IDE.
 
 Assicurati di installare la versione più recente delle librerie
 [ArduinoModbus](https://www.arduino.cc/reference/en/libraries/arduinoModbus/) e
@@ -201,11 +201,13 @@ sketch per Arduino sarà composto da una funzione di `setup()` e una funzione
 `loop()`:
 
 ```cpp
-void setup() {
+void setup()
+{
   // Codice di setup, eseguito all'avvio
 }
 
-void loop() {
+void loop()
+{
   // Codice di loop, eseguito all'infinito
 }
 ```
@@ -219,11 +221,13 @@ al funzionamento del programma:
 #include <ArduinoModbus.h>
 #include "finder-6m-read.h"
 
-void setup() {
+void setup()
+{
   // Codice di setup, eseguito all'avvio
 }
 
-void loop() {
+void loop()
+{
   // Codice di loop, eseguito all'infinito
 }
 ```
@@ -267,7 +271,8 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 }
 
-void loop() {
+void loop()
+{
   // Codice di loop, eseguito all'infinito
 }
 ```
@@ -302,11 +307,12 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 }
 
-void loop() {
+void loop()
+{
   // Codice di loop, eseguito all'infinito
 }
 
-uint32_t Modbus6MRead32(uint8_t address, uint16_t reg)
+uint32_t modbus6MRead32(uint8_t address, uint16_t reg)
 {
     ModbusRTUClient.requestFrom(address, HOLDING_REGISTERS, reg, 2);
     uint32_t data1 = ModbusRTUClient.read();
@@ -322,7 +328,7 @@ uint32_t Modbus6MRead32(uint8_t address, uint16_t reg)
 }
 ```
 
-La funzione `Modbus6MRead32()` legge dal dispositivo avente indirizzo Modbus
+La funzione `modbus6MRead32()` legge dal dispositivo avente indirizzo Modbus
 `address`, a partire dal registro `reg`. Si noti che l'ultimo parametro passato
 alla funzione `requestFrom()` è il numero di registri consecutivi da leggere, a
 partire da `reg`: essendo ogni registro lungo 16 bit ed ogni misura lunga 32
@@ -333,7 +339,7 @@ significativi, mentre il secondo valore letto viene posto nei 16 bit più
 significativi.
 
 Il codice della funzione `loop()` si limita a chiamare la funzione
-`Modbus6MRead32()` passandogli i giusti parametri, ed in seguito stampa le
+`modbus6MRead32()` passandogli i giusti parametri, ed in seguito stampa le
 misure su monitor seriale:
 
 ```cpp
@@ -353,10 +359,10 @@ void setup()
 
 void loop()
 {
-    int32_t frequency = Modbus6MRead32(ADDRESS, REG_FREQUENCY);
-    int32_t activePower = Modbus6MRead32(ADDRESS, REG_ACTIVE_POWER);
-    int32_t apparentPower = Modbus6MRead32(ADDRESS, REG_APPARENT_POWER);
-    int32_t energy = Modbus6MRead32(ADDRESS, REG_ENERGY);
+    int32_t frequency = modbus6MRead32(ADDRESS, REG_FREQUENCY);
+    int32_t activePower = modbus6MRead32(ADDRESS, REG_ACTIVE_POWER);
+    int32_t apparentPower = modbus6MRead32(ADDRESS, REG_APPARENT_POWER);
+    int32_t energy = modbus6MRead32(ADDRESS, REG_ENERGY);
 
     Serial.print("Frequency = " + (frequency != INVALID_DATA ? String(frequency) : String("read error!")));
     Serial.print(", Active power = " + (activePower != INVALID_DATA ? String(activePower) : String("read error!")));
@@ -366,7 +372,7 @@ void loop()
     delay(1000);
 }
 
-uint32_t Modbus6MRead32(uint8_t address, uint16_t reg)
+uint32_t modbus6MRead32(uint8_t address, uint16_t reg)
 {
     ModbusRTUClient.requestFrom(address, HOLDING_REGISTERS, reg, 2);
     uint32_t data1 = ModbusRTUClient.read();
@@ -444,11 +450,13 @@ dalla sola funzione di `setup()`: in questo caso dopo la configurazione non
 vogliame fare altro e la funzione `loop()` rimarrà vuota:
 
 ```cpp
-void setup() {
+void setup()
+{
   // Codice di setup, eseguito all'avvio
 }
 
-void loop() {
+void loop()
+{
   // Non utilizzata
 }
 ```
@@ -462,11 +470,13 @@ funzionamento del programma:
 #include <ArduinoModbus.h>
 #include "finder-6m-read.h"
 
-void setup() {
+void setup()
+{
   // Codice di setup, eseguito all'avvio
 }
 
-void loop() {
+void loop()
+{
   // Non utilizzata
 }
 ```
@@ -498,7 +508,7 @@ configurazione Modbus custom.
 
 Il codice qui sotto esegue alcune delle stesse operazioni viste nello sketch
 precedente, ma in più si occupa di effettuare alcune scritture sul Finder serie
-6M chiamando la funzione `Modbus6MWrite16()` che scriveremo a breve:
+6M chiamando la funzione `modbus6MWrite16()` che scriveremo a breve:
 
 ```cpp
 #include <Arduino.h>
@@ -517,24 +527,25 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 
     // Cambia indirizzo Modbus
-    Modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
+    modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
     // Imposta baudarate
-    Modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
+    modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
 
     // Salva la configurazione
 }
 
-void loop() {
+void loop()
+{
   // Non utilizzata
 }
 
-void Modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t value)
+void modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t value)
 {
   // Scrive value nel registro reg del dispositivo con indirizzo address
 }
 ```
 
-La funzione `Modbus6MWrite16()` si coccupa di scrivere comandi da 16 bit nel
+La funzione `modbus6MWrite16()` si coccupa di scrivere comandi da 16 bit nel
 registro indicato del dispositivo con indirizzo Modbus pari ad `address`:
 
 ```cpp
@@ -554,18 +565,19 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 
     // Cambia indirizzo Modbus
-    Modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
+    modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
     // Imposta baudarate
-    Modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
+    modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
 
     // Salva la configurazione
 }
 
-void loop() {
+void loop()
+{
   // Non utilizzata
 }
 
-void Modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t value)
+void modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t value)
 {
     ModbusRTUClient.holdingRegisterWrite(address, reg, value);
 }
@@ -591,11 +603,11 @@ void setup()
     ModbusRTUClient.begin(BAUDRATE, SERIAL_8N1);
 
     // Cambia indirizzo Modbus
-    Modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
+    modbus6MWrite16(ADDRESS, REG_Modbus_ADDRESS, NEW_ADDRESS);
     // Imposta baudarate
-    Modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
+    modbus6MWrite16(ADDRESS, REG_BAUDRATE, BAUDRATE_CODE_38400);
 
-    Modbus6MWrite16(ADDRESS, REG_COMMAND, COMMAND_SAVE);
+    modbus6MWrite16(ADDRESS, REG_COMMAND, COMMAND_SAVE);
     delay(3000);
     Serial.println("Modbus address has been changed. Please, execute the following steps:");
     Serial.println("1. Power OFF the 6M.");
@@ -603,11 +615,12 @@ void setup()
     Serial.println("3. Power back ON the 6M.");
 }
 
-void loop() {
+void loop()
+{
   // Non utilizzata
 }
 
-void Modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
+void modbus6MWrite16(uint8_t address, uint16_t reg, uint16_t toWrite)
 {
     ModbusRTUClient.holdingRegisterWrite(address, reg, toWrite);
 }
@@ -623,6 +636,7 @@ Modbus address has been changed. Please, execute the following steps:
 2. Set both DIP switches DOWN.
 3. Power back ON the 6M.
 ```
+
 ## Utilizzo della libreria Finder6M
 
 Per semplificare tutte le operazioni eseguite in questo tutorial, è possibile
